@@ -1,0 +1,14 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Sebo Digital App",
+      "request": "launch",
+      "type": "dart",
+      "program": "lib/main.dart",
+      "toolArgs": [
+        "--dart-define=SEBO_API_URL=https://sebo-digital-site-production.up.railway.app"
+      ]
+    }
+  ]
+}
