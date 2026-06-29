@@ -42,7 +42,9 @@ class _SeboDigitalAppState extends State<SeboDigitalApp> {
         return MaterialApp(
           title: 'Sebo Digital',
           debugShowCheckedModeBanner: false,
-          theme: buildSeboTheme(),
+          theme: buildSeboTheme(Brightness.light),
+          darkTheme: buildSeboTheme(Brightness.dark),
+          themeMode: controller.themeMode,
           home: AppShell(controller: controller),
         );
       },
@@ -89,6 +91,17 @@ class AppShell extends StatelessWidget {
                     child: CircularProgressIndicator(strokeWidth: 2),
                   )
                 : const Icon(Icons.refresh),
+          ),
+          IconButton(
+            tooltip: controller.darkThemeEnabled
+                ? 'Usar tema claro'
+                : 'Usar tema escuro',
+            onPressed: controller.toggleThemeMode,
+            icon: Icon(
+              controller.darkThemeEnabled
+                  ? Icons.light_mode_outlined
+                  : Icons.dark_mode_outlined,
+            ),
           ),
           IconButton(
             tooltip: 'Carrinho',

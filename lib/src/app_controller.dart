@@ -1,4 +1,4 @@
-import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
 
 import 'api_client.dart';
 import 'local_store.dart';
@@ -35,6 +35,7 @@ class AppController extends ChangeNotifier {
   bool bestSellersOnly = false;
   bool newReleasesOnly = false;
   CatalogSort sort = CatalogSort.relevance;
+  ThemeMode themeMode = ThemeMode.light;
 
   Map<int, int> _cart = {};
 
@@ -130,8 +131,10 @@ class AppController extends ChangeNotifier {
       ? 0
       : 14.9;
   double get cartTotal => cartLines.isEmpty ? 0 : cartSubtotal + cartShipping;
+  bool get darkThemeEnabled => themeMode == ThemeMode.dark;
 
   Future<void> boot() async {
+    themeMode = _themeModeFromStorage(await _store.loadThemeMode());
     session = await _store.loadSession();
     _cart = await _store.loadCart();
     notifyListeners();
@@ -284,6 +287,16 @@ class AppController extends ChangeNotifier {
     notifyListeners();
   }
 
+  Future<void> setThemeMode(ThemeMode value) async {
+    themeMode = value;
+    await _store.saveThemeMode(_themeModeToStorage(value));
+    notifyListeners();
+  }
+
+  Future<void> toggleThemeMode() {
+    return setThemeMode(darkThemeEnabled ? ThemeMode.light : ThemeMode.dark);
+  }
+
   void clearFilters() {
     catalogQuery = '';
     selectedCategory = null;
@@ -386,6 +399,22 @@ class AppController extends ChangeNotifier {
     final byHighlight = b.highlightScore.compareTo(a.highlightScore);
     if (byHighlight != 0) return byHighlight;
     return (b.rating ?? 0).compareTo(a.rating ?? 0);
+  }
+
+  ThemeMode _themeModeFromStorage(String value) {
+    return switch (value) {
+      'dark' => ThemeMode.dark,
+      'system' => ThemeMode.system,
+      _ => ThemeMode.light,
+    };
+  }
+
+  String _themeModeToStorage(ThemeMode value) {
+    return switch (value) {
+      ThemeMode.dark => 'dark',
+      ThemeMode.system => 'system',
+      ThemeMode.light => 'light',
+    };
   }
 
   @override

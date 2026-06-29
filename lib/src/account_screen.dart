@@ -36,9 +36,9 @@ class AccountScreen extends StatelessWidget {
           Container(
             padding: const EdgeInsets.all(18),
             decoration: BoxDecoration(
-              color: surface,
+              color: context.seboSurface,
               borderRadius: BorderRadius.circular(8),
-              border: Border.all(color: line),
+              border: Border.all(color: context.seboLine),
             ),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -62,10 +62,12 @@ class AccountScreen extends StatelessWidget {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          const Text(
+                          Text(
                             'Sua conta',
                             style: TextStyle(
-                              color: clay,
+                              color: context.isSeboDark
+                                  ? context.seboGold
+                                  : context.seboClay,
                               fontWeight: FontWeight.w900,
                               fontSize: 12,
                             ),
@@ -79,7 +81,7 @@ class AccountScreen extends StatelessWidget {
                           ),
                           Text(
                             user.email,
-                            style: const TextStyle(color: muted),
+                            style: TextStyle(color: context.seboMuted),
                           ),
                         ],
                       ),
@@ -163,9 +165,9 @@ class _AuthPanelState extends State<AuthPanel> {
         Container(
           padding: const EdgeInsets.all(18),
           decoration: BoxDecoration(
-            color: surface,
+            color: context.seboSurface,
             borderRadius: BorderRadius.circular(8),
-            border: Border.all(color: line),
+            border: Border.all(color: context.seboLine),
           ),
           child: Form(
             key: _formKey,
@@ -262,10 +264,10 @@ class _AuthPanelState extends State<AuthPanel> {
                   label: const Text('Entrar com a conta demo'),
                 ),
                 const SizedBox(height: 10),
-                const Text(
+                Text(
                   'Demo: guest@exemplo.com / guest123',
                   textAlign: TextAlign.center,
-                  style: TextStyle(color: muted, fontSize: 12),
+                  style: TextStyle(color: context.seboMuted, fontSize: 12),
                 ),
               ],
             ),
@@ -329,9 +331,9 @@ class _AccountInfo extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(18),
       decoration: BoxDecoration(
-        color: surface,
+        color: context.seboSurface,
         borderRadius: BorderRadius.circular(8),
-        border: Border.all(color: line),
+        border: Border.all(color: context.seboLine),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -372,7 +374,10 @@ class _DataLine extends StatelessWidget {
             width: 86,
             child: Text(
               label,
-              style: const TextStyle(color: muted, fontWeight: FontWeight.w800),
+              style: TextStyle(
+                color: context.seboMuted,
+                fontWeight: FontWeight.w800,
+              ),
             ),
           ),
           Expanded(

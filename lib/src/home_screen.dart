@@ -111,7 +111,7 @@ class _HeroSearch extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       constraints: const BoxConstraints(minHeight: 330),
-      padding: const EdgeInsets.fromLTRB(16, 26, 16, 28),
+      padding: const EdgeInsets.fromLTRB(16, 36, 16, 28),
       decoration: const BoxDecoration(
         gradient: LinearGradient(
           begin: Alignment.topLeft,
@@ -210,16 +210,16 @@ class _QuickSearch extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final chipBackground = context.isSeboDark ? darkSurface : surface;
+    final chipTextColor = context.isSeboDark ? darkInk : tealDark;
+
     return ActionChip(
       label: Text(label),
-      avatar: const Icon(Icons.auto_stories, size: 17),
+      avatar: Icon(Icons.auto_stories, color: chipTextColor, size: 17),
       onPressed: () => onSearch(value),
-      backgroundColor: Colors.white.withValues(alpha: 0.14),
-      side: BorderSide(color: Colors.white.withValues(alpha: 0.28)),
-      labelStyle: const TextStyle(
-        color: Colors.white,
-        fontWeight: FontWeight.w800,
-      ),
+      backgroundColor: chipBackground,
+      side: BorderSide(color: context.isSeboDark ? darkLine : Colors.white),
+      labelStyle: TextStyle(color: chipTextColor, fontWeight: FontWeight.w800),
     );
   }
 }
@@ -269,28 +269,31 @@ class _CategoryGrid extends StatelessWidget {
               child: Container(
                 padding: const EdgeInsets.all(16),
                 decoration: BoxDecoration(
-                  color: index.isEven ? surface : sage,
-                  border: Border.all(color: line),
+                  color: index.isEven
+                      ? context.seboSurface
+                      : context.seboSurfaceMuted,
+                  border: Border.all(color: context.seboLine),
                   borderRadius: BorderRadius.circular(8),
                 ),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Icon(_categoryIcon(category), color: teal),
+                    Icon(_categoryIcon(category), color: context.seboTeal),
                     const Spacer(),
                     Text(
                       category,
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
-                      style: const TextStyle(
+                      style: TextStyle(
+                        color: context.seboInk,
                         fontWeight: FontWeight.w900,
                         fontSize: 16,
                       ),
                     ),
-                    const Text(
+                    Text(
                       'Explorar livros',
                       style: TextStyle(
-                        color: teal,
+                        color: context.seboTeal,
                         fontWeight: FontWeight.w800,
                         fontSize: 12,
                       ),

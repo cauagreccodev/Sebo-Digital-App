@@ -36,7 +36,15 @@ E-mail: guest@exemplo.com
 Senha: guest123
 ```
 
-## Funcionalidades da v0.1
+## Funcionalidades
+
+### v0.2
+
+- Tema escuro com preferencia persistida no dispositivo
+- Ajustes de contraste em chips, cards, etiquetas e paineis
+- Carrosseis horizontais com arraste por toque/mouse e botoes de avanco
+
+### v0.1
 
 - Catalogo conectado a API existente
 - Busca, categorias, filtros e ordenacao
@@ -51,11 +59,11 @@ Senha: guest123
 Versao atual:
 
 ```text
-0.1.0+1
+0.2.0+2
 ```
 
-Tag Git planejada:
+Tag Git atual:
 
 ```text
-v0.1
+v0.2
 ```

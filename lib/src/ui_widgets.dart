@@ -1,3 +1,4 @@
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 
 import 'app_controller.dart';
@@ -11,6 +12,9 @@ class SeboLogo extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final titleColor = context.seboInk;
+    final subtitleColor = context.seboMuted;
+
     return Row(
       mainAxisSize: MainAxisSize.min,
       children: [
@@ -34,18 +38,22 @@ class SeboLogo extends StatelessWidget {
         ),
         if (!compact) ...[
           const SizedBox(width: 10),
-          const Column(
+          Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisSize: MainAxisSize.min,
             children: [
               Text(
                 'Sebo Digital',
-                style: TextStyle(fontWeight: FontWeight.w900, fontSize: 17),
+                style: TextStyle(
+                  color: titleColor,
+                  fontWeight: FontWeight.w900,
+                  fontSize: 17,
+                ),
               ),
               Text(
                 'livros usados e achados raros',
                 style: TextStyle(
-                  color: muted,
+                  color: subtitleColor,
                   fontSize: 11,
                   fontWeight: FontWeight.w600,
                 ),
@@ -110,6 +118,10 @@ class SectionTitle extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final eyebrowColor = context.isSeboDark
+        ? context.seboGold
+        : context.seboClay;
+
     return Row(
       crossAxisAlignment: CrossAxisAlignment.end,
       children: [
@@ -120,8 +132,8 @@ class SectionTitle extends StatelessWidget {
               if (eyebrow != null)
                 Text(
                   eyebrow!,
-                  style: const TextStyle(
-                    color: clay,
+                  style: TextStyle(
+                    color: eyebrowColor,
                     fontWeight: FontWeight.w900,
                     fontSize: 12,
                     letterSpacing: 0,
@@ -163,14 +175,14 @@ class EmptyState extends StatelessWidget {
       width: double.infinity,
       padding: const EdgeInsets.all(24),
       decoration: BoxDecoration(
-        color: surface,
+        color: context.seboSurface,
         borderRadius: BorderRadius.circular(8),
-        border: Border.all(color: line),
+        border: Border.all(color: context.seboLine),
       ),
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Icon(icon, color: teal, size: 34),
+          Icon(icon, color: context.seboTeal, size: 34),
           const SizedBox(height: 12),
           Text(
             title,
@@ -183,7 +195,7 @@ class EmptyState extends StatelessWidget {
           Text(
             message,
             textAlign: TextAlign.center,
-            style: const TextStyle(color: muted),
+            style: TextStyle(color: context.seboMuted),
           ),
           if (action != null) ...[const SizedBox(height: 18), action!],
         ],
@@ -192,15 +204,28 @@ class EmptyState extends StatelessWidget {
   }
 }
 
-class BookShelf extends StatelessWidget {
+class BookShelf extends StatefulWidget {
   const BookShelf({super.key, required this.books, required this.controller});
 
   final List<Book> books;
   final AppController controller;
 
   @override
+  State<BookShelf> createState() => _BookShelfState();
+}
+
+class _BookShelfState extends State<BookShelf> {
+  final _scrollController = ScrollController();
+
+  @override
+  void dispose() {
+    _scrollController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    if (books.isEmpty) {
+    if (widget.books.isEmpty) {
       return const EmptyState(
         icon: Icons.menu_book_outlined,
         title: 'Nenhum livro encontrado',
@@ -209,18 +234,94 @@ class BookShelf extends StatelessWidget {
     }
 
     return SizedBox(
-      height: 378,
-      child: ListView.separated(
-        padding: const EdgeInsets.symmetric(vertical: 4),
-        scrollDirection: Axis.horizontal,
-        itemCount: books.length,
-        separatorBuilder: (_, _) => const SizedBox(width: 14),
-        itemBuilder: (context, index) {
-          return SizedBox(
-            width: 238,
-            child: BookCard(book: books[index], controller: controller),
-          );
-        },
+      height: 388,
+      child: Stack(
+        children: [
+          GestureDetector(
+            behavior: HitTestBehavior.translucent,
+            onHorizontalDragEnd: (details) {
+              final velocity = details.primaryVelocity ?? 0;
+              if (velocity.abs() < 80) return;
+              _scrollBy(velocity < 0 ? 252 : -252);
+            },
+            child: ScrollConfiguration(
+              behavior: const MaterialScrollBehavior().copyWith(
+                dragDevices: PointerDeviceKind.values.toSet(),
+              ),
+              child: ListView.separated(
+                controller: _scrollController,
+                physics: const BouncingScrollPhysics(
+                  parent: AlwaysScrollableScrollPhysics(),
+                ),
+                padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 2),
+                scrollDirection: Axis.horizontal,
+                itemCount: widget.books.length,
+                separatorBuilder: (_, _) => const SizedBox(width: 14),
+                itemBuilder: (context, index) {
+                  return SizedBox(
+                    width: 238,
+                    child: BookCard(
+                      book: widget.books[index],
+                      controller: widget.controller,
+                    ),
+                  );
+                },
+              ),
+            ),
+          ),
+          Positioned(
+            left: 0,
+            top: 152,
+            child: _ShelfArrow(
+              icon: Icons.chevron_left,
+              onPressed: () => _scrollBy(-252),
+            ),
+          ),
+          Positioned(
+            right: 0,
+            top: 152,
+            child: _ShelfArrow(
+              icon: Icons.chevron_right,
+              onPressed: () => _scrollBy(252),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  void _scrollBy(double offset) {
+    if (!_scrollController.hasClients) return;
+    final position = _scrollController.position;
+    final target = (_scrollController.offset + offset).clamp(
+      position.minScrollExtent,
+      position.maxScrollExtent,
+    );
+    _scrollController.animateTo(
+      target,
+      duration: const Duration(milliseconds: 260),
+      curve: Curves.easeOutCubic,
+    );
+  }
+}
+
+class _ShelfArrow extends StatelessWidget {
+  const _ShelfArrow({required this.icon, required this.onPressed});
+
+  final IconData icon;
+  final VoidCallback onPressed;
+
+  @override
+  Widget build(BuildContext context) {
+    return Material(
+      color: context.seboSurface.withValues(alpha: 0.92),
+      elevation: 3,
+      shape: const CircleBorder(),
+      child: IconButton(
+        tooltip: icon == Icons.chevron_left ? 'Voltar' : 'Avancar',
+        onPressed: onPressed,
+        color: context.seboTeal,
+        icon: Icon(icon),
       ),
     );
   }
@@ -235,13 +336,13 @@ class BookCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
-      color: surface,
+      color: context.seboSurface,
       elevation: 0,
       margin: EdgeInsets.zero,
       clipBehavior: Clip.antiAlias,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(8),
-        side: const BorderSide(color: line),
+        side: BorderSide(color: context.seboLine),
       ),
       child: InkWell(
         onTap: () => Navigator.of(context).push(
@@ -264,7 +365,8 @@ class BookCard extends StatelessWidget {
                       book.title,
                       maxLines: 2,
                       overflow: TextOverflow.ellipsis,
-                      style: const TextStyle(
+                      style: TextStyle(
+                        color: context.seboInk,
                         fontWeight: FontWeight.w900,
                         height: 1.15,
                       ),
@@ -274,7 +376,7 @@ class BookCard extends StatelessWidget {
                       book.author,
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
-                      style: const TextStyle(color: muted, fontSize: 12),
+                      style: TextStyle(color: context.seboMuted, fontSize: 12),
                     ),
                     const Spacer(),
                     Wrap(
@@ -297,8 +399,8 @@ class BookCard extends StatelessWidget {
                           child: Text(
                             money(book.price),
                             overflow: TextOverflow.ellipsis,
-                            style: const TextStyle(
-                              color: tealDark,
+                            style: TextStyle(
+                              color: context.seboTealDark,
                               fontWeight: FontWeight.w900,
                               fontSize: 16,
                             ),
@@ -469,13 +571,13 @@ class MiniTag extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 5),
       decoration: BoxDecoration(
-        color: color ?? paperStrong,
+        color: color ?? context.seboSurfaceMuted,
         borderRadius: BorderRadius.circular(8),
       ),
       child: Text(
         label,
-        style: const TextStyle(
-          color: inkSoft,
+        style: TextStyle(
+          color: context.seboInkSoft,
           fontSize: 11,
           fontWeight: FontWeight.w800,
         ),
@@ -501,24 +603,24 @@ class MetricTile extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(14),
       decoration: BoxDecoration(
-        color: paperStrong,
+        color: context.seboSurfaceMuted,
         borderRadius: BorderRadius.circular(8),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          if (icon != null) Icon(icon, color: teal, size: 18),
+          if (icon != null) Icon(icon, color: context.seboTeal, size: 18),
           Text(
             value,
             style: Theme.of(context).textTheme.titleLarge?.copyWith(
-              color: tealDark,
+              color: context.seboTealDark,
               fontWeight: FontWeight.w900,
             ),
           ),
           Text(
             label,
-            style: const TextStyle(
-              color: muted,
+            style: TextStyle(
+              color: context.seboMuted,
               fontWeight: FontWeight.w700,
               fontSize: 12,
             ),
@@ -539,13 +641,13 @@ class StatusPill extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
       decoration: BoxDecoration(
-        color: sage,
+        color: context.seboSage,
         borderRadius: BorderRadius.circular(999),
       ),
       child: Text(
         label,
-        style: const TextStyle(
-          color: tealDark,
+        style: TextStyle(
+          color: context.seboTealDark,
           fontWeight: FontWeight.w900,
           fontSize: 12,
         ),
@@ -637,8 +739,8 @@ class _DetailContent extends StatelessWidget {
       children: [
         Text(
           book.category,
-          style: const TextStyle(
-            color: clay,
+          style: TextStyle(
+            color: context.isSeboDark ? context.seboGold : context.seboClay,
             fontWeight: FontWeight.w900,
             fontSize: 12,
           ),
@@ -654,8 +756,8 @@ class _DetailContent extends StatelessWidget {
         const SizedBox(height: 8),
         Text(
           'por ${book.author}',
-          style: const TextStyle(
-            color: inkSoft,
+          style: TextStyle(
+            color: context.seboInkSoft,
             fontSize: 16,
             fontWeight: FontWeight.w700,
           ),
@@ -670,7 +772,7 @@ class _DetailContent extends StatelessWidget {
         Text(
           money(book.price),
           style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-            color: tealDark,
+            color: context.seboTealDark,
             fontWeight: FontWeight.w900,
           ),
         ),
@@ -679,7 +781,10 @@ class _DetailContent extends StatelessWidget {
           book.stock > 0
               ? '${book.stock} unidade(s) em estoque'
               : 'Indisponivel',
-          style: const TextStyle(color: muted, fontWeight: FontWeight.w700),
+          style: TextStyle(
+            color: context.seboMuted,
+            fontWeight: FontWeight.w700,
+          ),
         ),
         const SizedBox(height: 18),
         FilledButton.icon(
@@ -734,7 +839,7 @@ class _DetailContent extends StatelessWidget {
           const SizedBox(height: 8),
           Text(
             book.description,
-            style: const TextStyle(color: inkSoft, height: 1.45),
+            style: TextStyle(color: context.seboInkSoft, height: 1.45),
           ),
         ],
       ],
@@ -753,9 +858,9 @@ class _InfoBlock extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: surface,
+        color: context.seboSurface,
         borderRadius: BorderRadius.circular(8),
-        border: Border.all(color: line),
+        border: Border.all(color: context.seboLine),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -786,7 +891,10 @@ class _InfoRow extends StatelessWidget {
             width: 92,
             child: Text(
               label,
-              style: const TextStyle(color: muted, fontWeight: FontWeight.w700),
+              style: TextStyle(
+                color: context.seboMuted,
+                fontWeight: FontWeight.w700,
+              ),
             ),
           ),
           Expanded(

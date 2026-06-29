@@ -61,9 +61,9 @@ class _CartItem extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
-        color: surface,
+        color: context.seboSurface,
         borderRadius: BorderRadius.circular(8),
-        border: Border.all(color: lineColor),
+        border: Border.all(color: context.seboLine),
       ),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -85,20 +85,23 @@ class _CartItem extends StatelessWidget {
                   book.title,
                   maxLines: 2,
                   overflow: TextOverflow.ellipsis,
-                  style: const TextStyle(fontWeight: FontWeight.w900),
+                  style: TextStyle(
+                    color: context.seboInk,
+                    fontWeight: FontWeight.w900,
+                  ),
                 ),
                 const SizedBox(height: 4),
                 Text(
                   '${book.author} - ${book.typeLabel} - ${book.conditionLabel}',
                   maxLines: 2,
                   overflow: TextOverflow.ellipsis,
-                  style: const TextStyle(color: muted, fontSize: 12),
+                  style: TextStyle(color: context.seboMuted, fontSize: 12),
                 ),
                 const SizedBox(height: 8),
                 Text(
                   money(line.subtotal),
-                  style: const TextStyle(
-                    color: tealDark,
+                  style: TextStyle(
+                    color: context.seboTealDark,
                     fontWeight: FontWeight.w900,
                     fontSize: 16,
                   ),
@@ -114,7 +117,10 @@ class _CartItem extends StatelessWidget {
                       padding: const EdgeInsets.symmetric(horizontal: 12),
                       child: Text(
                         '${line.quantity}',
-                        style: const TextStyle(fontWeight: FontWeight.w900),
+                        style: TextStyle(
+                          color: context.seboInk,
+                          fontWeight: FontWeight.w900,
+                        ),
                       ),
                     ),
                     _QtyButton(
@@ -170,9 +176,9 @@ class _SummaryPanel extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(18),
       decoration: BoxDecoration(
-        color: surface,
+        color: context.seboSurface,
         borderRadius: BorderRadius.circular(8),
-        border: Border.all(color: lineColor),
+        border: Border.all(color: context.seboLine),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -202,9 +208,9 @@ class _SummaryPanel extends StatelessWidget {
             Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                const Text(
+                Text(
                   'Entre na sua conta para informar a entrega e finalizar o pedido.',
-                  style: TextStyle(color: muted),
+                  style: TextStyle(color: context.seboMuted),
                 ),
                 const SizedBox(height: 12),
                 FilledButton.icon(
@@ -235,9 +241,9 @@ class _SummaryPanel extends StatelessWidget {
               label: const Text('Finalizar pedido'),
             ),
           const SizedBox(height: 10),
-          const Text(
+          Text(
             'Ambiente demonstrativo: nenhuma cobranca real sera realizada.',
-            style: TextStyle(color: muted, fontSize: 12),
+            style: TextStyle(color: context.seboMuted, fontSize: 12),
           ),
         ],
       ),
@@ -263,12 +269,12 @@ class _SummaryRow extends StatelessWidget {
       child: Row(
         children: [
           Expanded(
-            child: Text(label, style: const TextStyle(color: muted)),
+            child: Text(label, style: TextStyle(color: context.seboMuted)),
           ),
           Text(
             value,
             style: TextStyle(
-              color: strong ? tealDark : ink,
+              color: strong ? context.seboTealDark : context.seboInk,
               fontWeight: strong ? FontWeight.w900 : FontWeight.w800,
               fontSize: strong ? 18 : 14,
             ),
@@ -411,9 +417,9 @@ class _CheckoutPageState extends State<CheckoutPage> {
             Container(
               padding: const EdgeInsets.all(16),
               decoration: BoxDecoration(
-                color: surface,
+                color: context.seboSurface,
                 borderRadius: BorderRadius.circular(8),
-                border: Border.all(color: lineColor),
+                border: Border.all(color: context.seboLine),
               ),
               child: Column(
                 children: [

@@ -230,11 +230,14 @@ class _SortRow extends StatelessWidget {
   Widget build(BuildContext context) {
     return Row(
       children: [
-        const Icon(Icons.sort, color: muted, size: 19),
+        Icon(Icons.sort, color: context.seboMuted, size: 19),
         const SizedBox(width: 8),
-        const Text(
+        Text(
           'Ordenar por',
-          style: TextStyle(color: muted, fontWeight: FontWeight.w700),
+          style: TextStyle(
+            color: context.seboMuted,
+            fontWeight: FontWeight.w700,
+          ),
         ),
         const Spacer(),
         DropdownButton<CatalogSort>(

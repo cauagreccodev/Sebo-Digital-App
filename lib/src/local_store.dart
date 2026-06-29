@@ -7,6 +7,7 @@ import 'models.dart';
 class LocalStore {
   static const _authKey = 'seboDigitalAuth';
   static const _cartKey = 'seboDigitalCart';
+  static const _themeKey = 'seboDigitalThemeMode';
 
   Future<AuthSession?> loadSession() async {
     final prefs = await SharedPreferences.getInstance();
@@ -65,5 +66,15 @@ class LocalStore {
         .map((entry) => {'id': entry.key, 'quantity': entry.value})
         .toList(growable: false);
     await prefs.setString(_cartKey, jsonEncode(payload));
+  }
+
+  Future<String> loadThemeMode() async {
+    final prefs = await SharedPreferences.getInstance();
+    return prefs.getString(_themeKey) ?? 'light';
+  }
+
+  Future<void> saveThemeMode(String value) async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setString(_themeKey, value);
   }
 }

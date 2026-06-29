@@ -100,19 +100,19 @@ class _OrderCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
-      color: surface,
+      color: context.seboSurface,
       elevation: 0,
       margin: EdgeInsets.zero,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(8),
-        side: const BorderSide(color: line),
+        side: BorderSide(color: context.seboLine),
       ),
       child: ExpansionTile(
         tilePadding: const EdgeInsets.fromLTRB(16, 10, 12, 10),
         childrenPadding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
         title: Text(
           'Pedido ${order.code}',
-          style: const TextStyle(fontWeight: FontWeight.w900),
+          style: TextStyle(color: context.seboInk, fontWeight: FontWeight.w900),
         ),
         subtitle: Padding(
           padding: const EdgeInsets.only(top: 6),
@@ -121,7 +121,7 @@ class _OrderCard extends StatelessWidget {
             children: [
               Text(
                 dateTimeLabel(order.createdAt),
-                style: const TextStyle(color: muted),
+                style: TextStyle(color: context.seboMuted),
               ),
               const SizedBox(height: 6),
               Wrap(
@@ -165,7 +165,7 @@ class _Tracking extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(14),
       decoration: BoxDecoration(
-        color: paperStrong,
+        color: context.seboSurfaceMuted,
         borderRadius: BorderRadius.circular(8),
       ),
       child: Column(
@@ -173,17 +173,20 @@ class _Tracking extends StatelessWidget {
         children: [
           Row(
             children: [
-              const Icon(Icons.route_outlined, color: teal),
+              Icon(Icons.route_outlined, color: context.seboTeal),
               const SizedBox(width: 8),
               Expanded(
                 child: Text(
                   order.statusLabel,
-                  style: const TextStyle(fontWeight: FontWeight.w900),
+                  style: TextStyle(
+                    color: context.seboInk,
+                    fontWeight: FontWeight.w900,
+                  ),
                 ),
               ),
               Text(
                 shortDate(order.deliveryForecast),
-                style: const TextStyle(color: muted),
+                style: TextStyle(color: context.seboMuted),
               ),
             ],
           ),
@@ -202,7 +205,9 @@ class _Tracking extends StatelessWidget {
                     Container(
                       width: 34,
                       height: 2,
-                      color: index < current ? teal : line,
+                      color: index < current
+                          ? context.seboTeal
+                          : context.seboLine,
                     ),
                 ],
               ],
@@ -236,8 +241,10 @@ class _TrackingStep extends StatelessWidget {
             height: 24,
             alignment: Alignment.center,
             decoration: BoxDecoration(
-              color: done ? teal : surface,
-              border: Border.all(color: current ? tealDark : line),
+              color: done ? context.seboTeal : context.seboSurface,
+              border: Border.all(
+                color: current ? context.seboTealDark : context.seboLine,
+              ),
               shape: BoxShape.circle,
             ),
             child: done
@@ -251,7 +258,7 @@ class _TrackingStep extends StatelessWidget {
             maxLines: 2,
             overflow: TextOverflow.ellipsis,
             style: TextStyle(
-              color: current ? tealDark : muted,
+              color: current ? context.seboTealDark : context.seboMuted,
               fontSize: 10,
               fontWeight: current ? FontWeight.w900 : FontWeight.w700,
             ),
@@ -301,7 +308,10 @@ class _InfoLine extends StatelessWidget {
             width: 86,
             child: Text(
               label,
-              style: const TextStyle(color: muted, fontWeight: FontWeight.w800),
+              style: TextStyle(
+                color: context.seboMuted,
+                fontWeight: FontWeight.w800,
+              ),
             ),
           ),
           Expanded(
@@ -332,13 +342,13 @@ class _OrderItemRow extends StatelessWidget {
             height: 58,
             alignment: Alignment.center,
             decoration: BoxDecoration(
-              color: sage,
+              color: context.seboSage,
               borderRadius: BorderRadius.circular(8),
             ),
             child: Text(
               initialsFrom(item.title),
-              style: const TextStyle(
-                color: tealDark,
+              style: TextStyle(
+                color: context.seboTealDark,
                 fontWeight: FontWeight.w900,
               ),
             ),
@@ -352,17 +362,20 @@ class _OrderItemRow extends StatelessWidget {
                   item.title,
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
-                  style: const TextStyle(fontWeight: FontWeight.w900),
+                  style: TextStyle(
+                    color: context.seboInk,
+                    fontWeight: FontWeight.w900,
+                  ),
                 ),
                 Text(
                   '${item.author} - ${item.seller}',
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
-                  style: const TextStyle(color: muted, fontSize: 12),
+                  style: TextStyle(color: context.seboMuted, fontSize: 12),
                 ),
                 Text(
                   'Quantidade: ${item.quantity}',
-                  style: const TextStyle(color: muted, fontSize: 12),
+                  style: TextStyle(color: context.seboMuted, fontSize: 12),
                 ),
               ],
             ),
