@@ -38,6 +38,12 @@ Senha: guest123
 
 ## Funcionalidades
 
+### v0.3
+
+- GitHub Action de release que compila APK em tags `v*`
+- Publicacao automatica do APK como asset da GitHub Release
+- Artefato do APK disponivel tambem no workflow run
+
 ### v0.2
 
 - Tema escuro com preferencia persistida no dispositivo
@@ -59,11 +65,11 @@ Senha: guest123
 Versao atual:
 
 ```text
-0.2.0+2
+0.3.0+3
 ```
 
 Tag Git atual:
 
 ```text
-v0.2
+v0.3
 ```
