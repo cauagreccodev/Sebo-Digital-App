@@ -12,7 +12,7 @@ class SeboApiClient {
 
   static const defaultBaseUrl = String.fromEnvironment(
     'SEBO_API_URL',
-    defaultValue: 'https://sebo-digital-site-production.up.railway.app',
+    defaultValue: 'https://sebo-digital-site.onrender.com',
   );
 
   final http.Client _client;
