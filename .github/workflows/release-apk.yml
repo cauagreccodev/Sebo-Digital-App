@@ -42,7 +42,7 @@ jobs:
       - name: Build release APK
         run: >
           flutter build apk --release
-          --dart-define=SEBO_API_URL=https://sebo-digital-site-production.up.railway.app
+          --dart-define=SEBO_API_URL=https://sebo-digital-site.onrender.com
 
       - name: Prepare APK asset
         shell: bash

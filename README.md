@@ -7,7 +7,7 @@ Aplicativo mobile em Flutter/Dart para o Sebo Digital.
 O app mobile usa a mesma API da versao web:
 
 ```text
-https://sebo-digital-site-production.up.railway.app
+https://sebo-digital-site.onrender.com
 ```
 
 O banco de dados ja existe e continua sendo acessado pelo backend Spring Boot.
@@ -38,6 +38,11 @@ Senha: guest123
 
 ## Funcionalidades
 
+### v0.4
+
+- Migracao da URL padrao e dos builds de producao para o backend hospedado no Render (`https://sebo-digital-site.onrender.com`)
+- Atualizacao do workflow de Release APK para compilar conectando na nova API
+
 ### v0.3
 
 - GitHub Action de release que compila APK em tags `v*`
@@ -65,11 +70,11 @@ Senha: guest123
 Versao atual:
 
 ```text
-0.3.0+3
+0.4.0+4
 ```
 
 Tag Git atual:
 
 ```text
-v0.3
+v0.4
 ```
