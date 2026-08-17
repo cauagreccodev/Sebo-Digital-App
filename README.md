@@ -1,79 +1,79 @@
 # Sebo Digital App
 
-Aplicativo mobile em Flutter/Dart para o Sebo Digital.
+Flutter/Dart mobile application for Sebo Digital.
 
-## API e banco de dados
+## API and Database
 
-O app mobile usa a mesma API da versao web:
+The mobile app uses the same API as the web version:
 
 ```text
 https://sebo-digital-site.onrender.com
 ```
 
-O banco de dados ja existe e continua sendo acessado pelo backend Spring Boot.
-O app nao cria banco, nao faz seed e nao conecta diretamente ao PostgreSQL.
+The database already exists and continues to be accessed through the Spring Boot backend.
+The app does not create a database, perform seeding, or connect directly to PostgreSQL.
 
-Para trocar a API em desenvolvimento:
+To change the API during development:
 
 ```powershell
 flutter run -t lib/main.dart --dart-define=SEBO_API_URL=http://localhost:8080
 ```
 
-## Rodando
+## Running
 
 ```powershell
 flutter pub get
 flutter run -t lib/main.dart
 ```
 
-No VS Code, use a configuracao **Sebo Digital App**. Ela aponta sempre para
-`lib/main.dart`, mesmo que `test/widget_test.dart` esteja aberto.
+In VS Code, use the **Sebo Digital App** launch configuration. It always points to
+`lib/main.dart`, even when `test/widget_test.dart` is open.
 
-## Conta demo
+## Demo Account
 
 ```text
-E-mail: guest@exemplo.com
-Senha: guest123
+Email: guest@exemplo.com
+Password: guest123
 ```
 
-## Funcionalidades
+## Features
 
 ### v0.4
 
-- Migracao da URL padrao e dos builds de producao para o backend hospedado no Render (`https://sebo-digital-site.onrender.com`)
-- Atualizacao do workflow de Release APK para compilar conectando na nova API
+- Default URL and production builds migrated to the backend hosted on Render (`https://sebo-digital-site.onrender.com`)
+- Updated the Release APK workflow to build and connect to the new API
 
 ### v0.3
 
-- GitHub Action de release que compila APK em tags `v*`
-- Publicacao automatica do APK como asset da GitHub Release
-- Artefato do APK disponivel tambem no workflow run
+- GitHub Action release workflow that builds APKs on `v*` tags
+- Automatic publication of the APK as an asset in the GitHub Release
+- APK artifact also available in the workflow run
 
 ### v0.2
 
-- Tema escuro com preferencia persistida no dispositivo
-- Ajustes de contraste em chips, cards, etiquetas e paineis
-- Carrosseis horizontais com arraste por toque/mouse e botoes de avanco
+- Dark theme with preference persisted on the device
+- Contrast adjustments for chips, cards, badges, and panels
+- Horizontal carousels with touch/mouse drag support and navigation buttons
 
 ### v0.1
 
-- Catalogo conectado a API existente
-- Busca, categorias, filtros e ordenacao
-- Detalhes do livro e ofertas
-- Carrinho persistido localmente
-- Login, cadastro e conta demo
-- Checkout demonstrativo enviando pedidos para `/api/pedidos`
-- Historico de compras e rastreamento
+- Catalog connected to the existing API
+- Search, categories, filters, and sorting
+- Book details and offers
+- Locally persisted cart
+- Login, registration, and demo account
+- Demo checkout sending orders to `/api/pedidos`
+- Purchase history and order tracking
 
-## Versao
+## Version
 
-Versao atual:
+Current version:
 
 ```text
 0.4.0+4
 ```
 
-Tag Git atual:
+Current Git tag:
 
 ```text
 v0.4
