@@ -234,7 +234,7 @@ class _BookShelfState extends State<BookShelf> {
     }
 
     return SizedBox(
-      height: 388,
+      height: 418,
       child: Stack(
         children: [
           GestureDetector(
@@ -242,7 +242,7 @@ class _BookShelfState extends State<BookShelf> {
             onHorizontalDragEnd: (details) {
               final velocity = details.primaryVelocity ?? 0;
               if (velocity.abs() < 80) return;
-              _scrollBy(velocity < 0 ? 252 : -252);
+              _scrollBy(velocity < 0 ? 210 : -210);
             },
             child: ScrollConfiguration(
               behavior: const MaterialScrollBehavior().copyWith(
@@ -259,7 +259,7 @@ class _BookShelfState extends State<BookShelf> {
                 separatorBuilder: (_, _) => const SizedBox(width: 14),
                 itemBuilder: (context, index) {
                   return SizedBox(
-                    width: 238,
+                    width: 196,
                     child: BookCard(
                       book: widget.books[index],
                       controller: widget.controller,
@@ -271,18 +271,18 @@ class _BookShelfState extends State<BookShelf> {
           ),
           Positioned(
             left: 0,
-            top: 152,
+            top: 170,
             child: _ShelfArrow(
               icon: Icons.chevron_left,
-              onPressed: () => _scrollBy(-252),
+              onPressed: () => _scrollBy(-210),
             ),
           ),
           Positioned(
             right: 0,
-            top: 152,
+            top: 170,
             child: _ShelfArrow(
               icon: Icons.chevron_right,
-              onPressed: () => _scrollBy(252),
+              onPressed: () => _scrollBy(210),
             ),
           ),
         ],
@@ -353,11 +353,14 @@ class BookCard extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Expanded(flex: 6, child: BookCover(book: book, compact: true)),
             Expanded(
-              flex: 5,
+              flex: 13,
+              child: BookCover(book: book, compact: true),
+            ),
+            Expanded(
+              flex: 10,
               child: Padding(
-                padding: const EdgeInsets.all(14),
+                padding: const EdgeInsets.fromLTRB(12, 10, 12, 10),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -368,20 +371,25 @@ class BookCard extends StatelessWidget {
                       style: TextStyle(
                         color: context.seboInk,
                         fontWeight: FontWeight.w900,
+                        fontSize: 14,
                         height: 1.15,
                       ),
                     ),
-                    const SizedBox(height: 5),
+                    const SizedBox(height: 3),
                     Text(
                       book.author,
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
-                      style: TextStyle(color: context.seboMuted, fontSize: 12),
+                      style: TextStyle(
+                        color: context.seboMuted,
+                        fontSize: 12,
+                        fontWeight: FontWeight.w600,
+                      ),
                     ),
                     const Spacer(),
                     Wrap(
-                      spacing: 6,
-                      runSpacing: 6,
+                      spacing: 4,
+                      runSpacing: 4,
                       children: [
                         if (book.conditionLabel.isNotEmpty)
                           MiniTag(book.conditionLabel),
@@ -392,7 +400,7 @@ class BookCard extends StatelessWidget {
                         ),
                       ],
                     ),
-                    const SizedBox(height: 10),
+                    const SizedBox(height: 8),
                     Row(
                       children: [
                         Expanded(
@@ -402,7 +410,7 @@ class BookCard extends StatelessWidget {
                             style: TextStyle(
                               color: context.seboTealDark,
                               fontWeight: FontWeight.w900,
-                              fontSize: 16,
+                              fontSize: 15,
                             ),
                           ),
                         ),
@@ -413,7 +421,12 @@ class BookCard extends StatelessWidget {
                           onPressed: book.canAddToCart
                               ? () => _addToCart(context)
                               : null,
-                          icon: const Icon(Icons.add_shopping_cart, size: 19),
+                          padding: EdgeInsets.zero,
+                          constraints: const BoxConstraints(
+                            minWidth: 34,
+                            minHeight: 34,
+                          ),
+                          icon: const Icon(Icons.add_shopping_cart, size: 18),
                         ),
                       ],
                     ),

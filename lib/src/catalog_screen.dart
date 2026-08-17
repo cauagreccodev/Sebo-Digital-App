@@ -116,30 +116,18 @@ class _CatalogScreenState extends State<CatalogScreen> {
           else
             SliverPadding(
               padding: const EdgeInsets.fromLTRB(16, 0, 16, 24),
-              sliver: SliverLayoutBuilder(
-                builder: (context, constraints) {
-                  final width = constraints.crossAxisExtent;
-                  final columns = width >= 1000
-                      ? 4
-                      : width >= 740
-                      ? 3
-                      : width >= 520
-                      ? 2
-                      : 1;
-                  return SliverGrid(
-                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: columns,
-                      crossAxisSpacing: 14,
-                      mainAxisSpacing: 14,
-                      mainAxisExtent: 378,
-                    ),
-                    delegate: SliverChildBuilderDelegate(
-                      (context, index) =>
-                          BookCard(book: books[index], controller: controller),
-                      childCount: books.length,
-                    ),
-                  );
-                },
+              sliver: SliverGrid(
+                gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
+                  maxCrossAxisExtent: 220,
+                  crossAxisSpacing: 14,
+                  mainAxisSpacing: 14,
+                  mainAxisExtent: 410,
+                ),
+                delegate: SliverChildBuilderDelegate(
+                  (context, index) =>
+                      BookCard(book: books[index], controller: controller),
+                  childCount: books.length,
+                ),
               ),
             ),
         ],
