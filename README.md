@@ -1,5 +1,7 @@
 # Sebo Digital App
 
+[Versão em Português](README_PT.md)
+
 Flutter/Dart mobile application for Sebo Digital.
 
 ## API and Database
